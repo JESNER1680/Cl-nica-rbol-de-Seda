@@ -1,5 +1,5 @@
 let usuarios = [];
-class Usuario {
+class Usuario {//Objeto usuario con sus constructor
     constructor(cedula, NombreCompleto, Apellidos, NumeroCelular, correo, contrasenna, confirmarContrasenna) {
         this.cedula = cedula;
         this.NombreCompleto = NombreCompleto;
@@ -11,10 +11,9 @@ class Usuario {
     }
 }
 
-
+//Funcion para llevarlo a otra pagina sí se presiona el submit
 const formRegistro = document.getElementById("formRegistro");
 if (formRegistro !== null) {
-    console.log("ENTRE AL ERROR");
     formRegistro.addEventListener("submit", event => {
         event.preventDefault();
         window.location.href = "Registrar.html";
@@ -38,15 +37,15 @@ async function encriptarContrasena(contrasena) {
 
 // Añadir el evento submit al formulario
 document.addEventListener("DOMContentLoaded", () => {
-    const formulario = document.getElementById("formularioRegistro");
-    if (formulario !== null) {
-        formulario.addEventListener("submit", async (event) => {
+    const formulario = document.getElementById("formularioRegistro");//Se obtiene el elemento
+    if (formulario !== null) {//Valida que no es null
+        formulario.addEventListener("submit", async (event) => {//Se espera a que el evento se active
             event.preventDefault();
-            const { cedula, NombreCompleto, Apellidos, correo, contrasenna, confirmarContrasenna, NumeroCelular } = obtenerDatosFormularioRegistro();
-            const esValido = validarContrasenna(contrasenna) && validarCedula(cedula) && validarApellidos(Apellidos)
-                && validarNombreCompleto(NombreCompleto) && validarNumeroCelular(NumeroCelular) && validarCorreoElectronico(correo);
-            console.log(validarContrasenna(contrasenna) + "-" + validarCedula(cedula) + "-" + validarApellidos(Apellidos)
-                + "-" + validarNombreCompleto(NombreCompleto) + "-" + validarNumeroCelular(NumeroCelular) + "-" + validarCorreoElectronico(correo));
+            const { cedula, NombreCompleto, Apellidos, correo, contrasenna, confirmarContrasenna, NumeroCelular } = obtenerDatosFormularioRegistro();//Se obtienen los datos
+            //Se validan los datos
+            const esValido = validarContrasenna(contrasenna) && validarCedula(cedula) && validarApellidos(Apellidos) && validarNombreCompleto(NombreCompleto) && validarNumeroCelular(NumeroCelular) && validarCorreoElectronico(correo);
+
+            //Se pregunta sí se cumple con la condición.            
             esValido ? manejarExito(cedula, NombreCompleto, Apellidos, correo, contrasenna, confirmarContrasenna, NumeroCelular) : manejarError();
         });
     }
@@ -86,28 +85,28 @@ const validarContrasenna = (contrasenna) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.
 const confirmarContrasenna = (contrasenna, confirmacion) => contrasenna === confirmacion;
 
 
+//Funcion para ver sí es valido los datos o sí ya hay otro usuario repetido
 const manejarExito = async (cedula, NombreCompleto, Apellidos, correo, contrasenna, confirmarContrasenna, NumeroCelular) => {
-    usuarios = JSON.parse(localStorage.getItem("usuarios"));
-    if (contrasenna === confirmarContrasenna) {
-        const contrasennaEncriptada = await encriptarContrasena(contrasenna);
-        console.log(contrasennaEncriptada);
+    usuarios = JSON.parse(localStorage.getItem("usuarios"));//Se obtienen los datos
+    if (contrasenna === confirmarContrasenna) {//Se valida la contraseña
+        const contrasennaEncriptada = await encriptarContrasena(contrasenna);//Se encripta la contraseña
+        //Se crea un nuevo usuario
         let usuario = new Usuario(cedula, NombreCompleto, Apellidos, NumeroCelular, correo, contrasennaEncriptada, confirmarContrasenna);
         let usuarioRepetido = false;
-        if (usuarios) {
-            usuarios.forEach(user => {
+        if (usuarios) {//Valida si no es null
+            usuarios.forEach(user => {//Se itera para ver sí el usaurio es repetido
                 if (user.cedula === usuario.cedula || user.correo === usuario.correo || user.NumeroCelular === usuario.NumeroCelular) {
                     usuarioRepetido = true;
                 }
             });
         } else {
-            usuarios = [];
+            usuarios = [];//Se limpia el array
         }
-        if (!usuarioRepetido) {
+        if (!usuarioRepetido) {// Sí no está repetido, se añadae el nuevo usuario
             usuarios.push(usuario);
-            localStorage.setItem("usuarios", JSON.stringify(usuarios));
-            console.log("Usuarios almacenados en localStorage:", usuarios);
+            localStorage.setItem("usuarios", JSON.stringify(usuarios));// Se guarda
             alert("Registro exitoso. Por favor, inicia sesión.");
-            limpiarCamposTexto();
+            limpiarCamposTexto();//Se limpian los campos
             window.location.href = "inicioSesion.html";
         } else {
             alert("Datos ya registrados, ingrese un nuevo correo, cedula o telefono");
@@ -116,22 +115,23 @@ const manejarExito = async (cedula, NombreCompleto, Apellidos, correo, contrasen
 };
 
 
+//Mensaje de error
 const manejarError = () => {
     alert("Los datos ingresados no son válidos");
 };
 
+//Se limpian los campos de texto
 const limpiarCamposTexto = () => {
     const campos = document.querySelectorAll("#formulario input[type='email'], #formulario input[type='password']");
     campos.forEach((campo) => campo.value = "");
 };
+//Evento para cerrar la sesion
 document.addEventListener("DOMContentLoaded", () => {
     const cerrarSesionLi = document.getElementById("cerrarSesion");
     cerrarSesionLi.addEventListener("click", cerrarSesion);
 });
 
-function cerrarSesion() {
-    // Eliminar el usuario activo de sessionStorage
-    console.log("CERRAR SESION");
+const cerrarSesion = () => {
     sessionStorage.removeItem("usuarioActivo");
     // Redirigir a la página de inicio de sesión o a otra página según sea necesario
     window.location.href = "index.html";

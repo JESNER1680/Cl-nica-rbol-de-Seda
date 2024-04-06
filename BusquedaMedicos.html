@@ -25,54 +25,56 @@
     </header>
     <main>
         <div class="contenido">
-            <div class="formulario">
-                <h2>Búsqueda de médicos</h2>
-                <br>
-                <form id="formularioBusquedaMedico">
-                    <div class="usuarios">
-                        <label>Información:</label>
-                        <input id="datoFiltro" type="text" required placeholder="Información"
-                            list="opcionesAutocompletado">
-                        <datalist id="opcionesAutocompletado">
+            <div class="articulos">
+                <div class="formulario">
+                    <h2>Búsqueda de médicos</h2>
+                    <br>
+                    <form id="formularioBusquedaMedico">
+                        <div class="usuarios">
+                            <label>Información:</label>
+                            <input id="datoFiltro" type="text" required placeholder="Información"
+                                list="opcionesAutocompletado">
+                            <datalist id="opcionesAutocompletado">
 
-                        </datalist>
+                            </datalist>
+                        </div>
+                        <br>
+                        <div class="usuarios">
+                            <label>Filtrar por:</label>
+                            <select name="tipoFiltrado" id="tipoFiltrado">
+                                <option value="nombreCompleto">Nombre</option>
+                                <option value="identificacion">Identificación</option>
+                                <option value="especialidad">Especialización</option>
+                                <option value="ubicacion">Ubicación</option>
+                            </select>
+                        </div>
+                        <br>
+                        <input id="botonBusqueda" type="submit" value="Filtrar">
+                    </form>
+                </div>
+                <br>
+                <div class="Lista" id="Lista">
+                    <table id="TablaBusqueda">
+                        <thead>
+                            <tr>
+                                <th>Nombre del Médico</th>
+                                <th>Identificación</th>
+                                <th>Ubicación</th>
+                                <th>Especialidad</th>
+                                <th>Ver perfil</th>
+                            </tr>
+                        </thead>
+                        <tbody id="informacionTabla">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="botones-container">
+                    <!-- Botones de siguiente y anterior -->
+                    <div id="botonesPaginacion"></div>
+                    <div id="botonesSiguienteAnterior">
+                        <button id="botonAnterior">Anterior</button>
+                        <button id="botonSiguiente">Siguiente</button>
                     </div>
-                    <br>
-                    <div class="usuarios">
-                        <label>Filtrar por:</label>
-                        <select name="tipoFiltrado" id="tipoFiltrado">
-                            <option value="nombreCompleto">Nombre</option>
-                            <option value="identificacion">Identificación</option>
-                            <option value="especialidad">Especialización</option>
-                            <option value="ubicacion">Ubicación</option>
-                        </select>
-                    </div>
-                    <br>
-                    <input id="botonBusqueda" type="submit" value="Filtrar">
-                </form>
-            </div>
-            <br>
-            <div class="Lista" id="Lista">
-                <table id="TablaBusqueda">
-                    <thead>
-                        <tr>
-                            <th>Nombre del Médico</th>
-                            <th>Identificación</th>
-                            <th>Ubicación</th>
-                            <th>Especialidad</th>
-                            <th>Ver perfil</th>
-                        </tr>
-                    </thead>
-                    <tbody id="informacionTabla">
-                    </tbody>
-                </table>
-            </div>
-            <div class="botones-container">
-                <!-- Botones de siguiente y anterior -->
-                <div id="botonesPaginacion"></div>
-                <div id="botonesSiguienteAnterior">
-                    <button id="botonAnterior">Anterior</button>
-                    <button id="botonSiguiente">Siguiente</button>
                 </div>
             </div>
         </div>

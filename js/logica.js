@@ -1,26 +1,34 @@
-// Recuperar usuario activo almacenado en sessionStorage cuando se carga la página
+//evento para obtener el usuario activo
 document.addEventListener("DOMContentLoaded", () => {
-    const usuarioActivoString = sessionStorage.getItem("usuarioActivo");
-    if (usuarioActivoString) {
-        usuarioActivo = JSON.parse(usuarioActivoString);
-        const cerrarSesionLi = document.getElementById("cerrarSesion");
+    const usuarioActivoString = sessionStorage.getItem("usuarioActivo");//Obtenemos el usuario activo
+    if (usuarioActivoString) {//Validamos que no sea null
+        usuarioActivo = JSON.parse(usuarioActivoString);//Convertimos el valor en un objeto
+        const cerrarSesionLi = document.getElementById("cerrarSesion");//Obtenemos el elemento
 
-        cerrarSesionLi.style.display = "inline-block";
-        const elementosMostrar = document.querySelectorAll("#agendarCita, #busquedaMedico, #preguntasFrec, #servicios");
-        // Mostrar cada elemento
-        elementosMostrar.forEach(elemento => {
-            elemento.style.display = "inline-block";
+        cerrarSesionLi.style.display = "inline-block";//habilitamos la opcion de cerrar secion
+        const elementosMostrar = document.querySelectorAll("#agendarCita,#animacion, #busquedaMedico, #preguntasFrec, #servicios");//Seleccionamos todos los componentes que cumplan con los valores
+        elementosMostrar.forEach(elemento => {//Habiliamos todas las opciones cuando inicias sesion
+            elemento.style.display = "inline-block";//Lo hacemos visible
         });
-        console.log("Usuario activo recuperado:", usuarioActivo);
-    } else {
-        const elementosMostrar = document.querySelectorAll("#agendarCita,#busquedaMedico, #preguntasFrec, #servicios");
-        // Mostrar cada elemento
+    } else {//Caso contrario que no haya usuario activo, hacemos lo contrario, deshabilitamos las opciones.
+        const elementosMostrar = document.querySelectorAll("#agendarCita,#inicioSesion,  #animacion, #busquedaMedico, #preguntasFrec, #servicios");
         elementosMostrar.forEach(elemento => {
-            elemento.style.display = "none";
+            elemento.style.display = "none";//Las ocultamos
         });
         console.log("No hay usuario activo almacenado en sessionStorage");
     }
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+    const cerrarSesionLi = document.getElementById("cerrarSesion");//Obtenemos el elemento con el id
+    cerrarSesionLi.addEventListener("click", cerrarSesion);//Vemos sí hubo un evento de click
+});
+
+const cerrarSesion = () => {//Cerramos la sesion del usuarioActivo
+    sessionStorage.removeItem("usuarioActivo");//Limpiamos al usuario activo
+    window.location.href = "index.html";//Nos redirije a la pagina de inicio
+}
+//evento para recuperar la contraseña cuando se presione el boton
 document.addEventListener("DOMContentLoaded", function () {
     var botonRecuperar = document.getElementById("botonRecuperar");
     if (botonRecuperar) {
@@ -30,14 +38,3 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
-
-
-document.addEventListener("DOMContentLoaded", () => {
-    const cerrarSesionLi = document.getElementById("cerrarSesion");
-    cerrarSesionLi.addEventListener("click", cerrarSesion);
-});
-
-function cerrarSesion() {
-    sessionStorage.removeItem("usuarioActivo");
-    window.location.href = "index.html";
-}

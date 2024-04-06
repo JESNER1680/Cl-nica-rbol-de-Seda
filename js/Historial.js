@@ -1,10 +1,12 @@
+// Declaramos las siguientes variables para almacenar información relacionada con el sistema.
+let usuarios = []; // Almacena información de los usuarios registrados.
+let medicos = []; // Almacena información de los médicos registrados.
+let citas = []; // Almacena información de las citas médicas agendadas.
+let usuarioActivo = null; // Almacena la información del usuario que ha iniciado sesión.
+let medicosFiltradosSelect = []; // Almacena médicos filtrados seleccionados.
+let indiceMedicoSeleccionado = -1; // Índice del médico seleccionado en la lista.
 
-let usuarios = [];
-let medicos = [];
-let citas = [];
-let usuarioActivo = null;
-let medicosFiltradosSelect = [];
-let indiceMedicoSeleccionado = -1;
+// Definimos la clase 'Usuario' para representar a los usuarios del sistema.
 class Usuario {
     constructor(cedula, NombreCompleto, Apellidos, NumeroCelular, correo, contrasenna, confirmarContrasenna) {
         this.cedula = cedula;
@@ -17,6 +19,7 @@ class Usuario {
     }
 }
 
+// Definimos la clase 'CitaMedica' para representar las citas médicas.
 class CitaMedica {
     constructor(fechaCita, horaCita, medico, especialidad, cedulaUsuario, estadoCita) {
         this.fechaCita = fechaCita;
@@ -28,6 +31,7 @@ class CitaMedica {
     }
 }
 
+// Definimos la clase 'Medico' para representar a los médicos del sistema.
 class Medico {
     constructor(nombreCompleto, especialidad, ubicacion, horarios, informacionContacto, resenasCalificaciones, biografia) {
         this.nombreCompleto = nombreCompleto;
@@ -41,15 +45,17 @@ class Medico {
 }
 
 
-const crearTabla = (citas) => {
-    const tabla = document.getElementById('informacionTabla');
-    tabla.innerHTML = '';
 
-    if (usuarioActivo) {
-        citas.forEach(cita => {
-            if (cita.cedulaUsuario === usuarioActivo.cedula) {
-                const fila = tabla.insertRow();
+const crearTabla = (citas) => {//Se crea la tabla, recibe la lista de citas
+    const tabla = document.getElementById('informacionTabla');//Se obtiene el elemento segun el id
+    tabla.innerHTML = '';//Se limpia el elemento
 
+    if (usuarioActivo) {//Se valida que no sea null
+        citas.forEach(cita => {// Se itera en la lista
+            if (cita.cedulaUsuario === usuarioActivo.cedula) {// Se valida la condición sí el usuario activo tiene citas
+                const fila = tabla.insertRow();//Se crea una fila
+
+                //Se le dan los valores y se insertan en sus respectivas celdas
                 const fechaCitaCell = fila.insertCell(0);
                 fechaCitaCell.textContent = cita.fechaCita;
                 const medicoCell = fila.insertCell(1);
@@ -63,35 +69,35 @@ const crearTabla = (citas) => {
     }
 };
 
+//evento para obtener el usuario activo
 document.addEventListener("DOMContentLoaded", () => {
-    const usuarioActivoString = sessionStorage.getItem("usuarioActivo");
-    if (usuarioActivoString) {
-        usuarioActivo = JSON.parse(usuarioActivoString);
-        const cerrarSesionLi = document.getElementById("cerrarSesion");
+    const usuarioActivoString = sessionStorage.getItem("usuarioActivo");//Obtenemos el usuario activo
+    if (usuarioActivoString) {//Validamos que no sea null
+        usuarioActivo = JSON.parse(usuarioActivoString);//Convertimos el valor en un objeto
+        const cerrarSesionLi = document.getElementById("cerrarSesion");//Obtenemos el elemento
 
-        cerrarSesionLi.style.display = "inline-block";
-        const elementosMostrar = document.querySelectorAll("#agendarCita,#animacion, #busquedaMedico, #preguntasFrec, #servicios");
-        elementosMostrar.forEach(elemento => {
-            elemento.style.display = "inline-block";
+        cerrarSesionLi.style.display = "inline-block";//habilitamos la opcion de cerrar secion
+        const elementosMostrar = document.querySelectorAll("#agendarCita,#animacion, #busquedaMedico, #preguntasFrec, #servicios");//Seleccionamos todos los componentes que cumplan con los valores
+        elementosMostrar.forEach(elemento => {//Habiliamos todas las opciones cuando inicias sesion
+            elemento.style.display = "inline-block";//Lo hacemos visible
         });
-        citas = JSON.parse(localStorage.getItem("citas")) || [];
+        citas = JSON.parse(localStorage.getItem("citas")) || [];// Se obtiene las citas
         crearTabla(citas);
-        console.log("Usuario activo recuperado:", usuarioActivo);
-    } else {
-        const elementosMostrar = document.querySelectorAll("#agendarCita,#iniciarSesion,  #animacion, #busquedaMedico, #preguntasFrec, #servicios");
+    } else {//Caso contrario que no haya usuario activo, hacemos lo contrario, deshabilitamos las opciones.
+        const elementosMostrar = document.querySelectorAll("#agendarCita,#inicioSesion,  #animacion, #busquedaMedico, #preguntasFrec, #servicios");
         elementosMostrar.forEach(elemento => {
-            elemento.style.display = "none";
+            elemento.style.display = "none";//Las ocultamos
         });
         console.log("No hay usuario activo almacenado en sessionStorage");
     }
 });
+
 document.addEventListener("DOMContentLoaded", () => {
-    const cerrarSesionLi = document.getElementById("cerrarSesion");
-    cerrarSesionLi.addEventListener("click", cerrarSesion);
+    const cerrarSesionLi = document.getElementById("cerrarSesion");//Obtenemos el elemento con el id
+    cerrarSesionLi.addEventListener("click", cerrarSesion);//Vemos sí hubo un evento de click
 });
 
-function cerrarSesion() {
-    console.log("CERRAR SESION");
-    sessionStorage.removeItem("usuarioActivo");
-    window.location.href = "index.html";
+const cerrarSesion = () => {//Cerramos la sesion del usuarioActivo
+    sessionStorage.removeItem("usuarioActivo");//Limpiamos al usuario activo
+    window.location.href = "index.html";//Nos redirije a la pagina de inicio
 }

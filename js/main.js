@@ -1,8 +1,11 @@
-let usuarios = [];
-const medicos = [];
-const citas = [];
-let usuarioActivo = null;
-let contadorIntentosContra = 0;
+// Declaramos las siguientes variables para almacenar información relacionada con el sistema.
+let usuarios = []; // Almacena información de los usuarios registrados.
+const medicos = []; // Almacena información de los médicos registrados. (constante)
+const citas = []; // Almacena información de las citas médicas agendadas. (constante)
+let usuarioActivo = null; // Almacena la información del usuario que ha iniciado sesión.
+let contadorIntentosContra = 0; // Contador de intentos de inicio de sesión fallidos.
+
+// Definimos la clase 'Usuario' para representar a los usuarios del sistema.
 class Usuario {
     constructor(cedula, NombreCompleto, Apellidos, NumeroCelular, correo, contrasenna, confirmarContrasenna) {
         this.cedula = cedula;
@@ -15,6 +18,7 @@ class Usuario {
     }
 }
 
+// Definimos la clase 'CitaMedica' para representar las citas médicas.
 class CitaMedica {
     constructor(fechaCita, horaCita, medico, especialidad, cedulaUsuario, estadoCita) {
         this.fechaCita = fechaCita;
@@ -26,6 +30,7 @@ class CitaMedica {
     }
 }
 
+// Definimos la clase 'Medico' para representar a los médicos del sistema.
 class Medico {
     constructor(nombreCompleto, identificacion, especialidad, ubicacion, horarios, informacionContacto, resenasCalificaciones, biografia) {
         this.nombreCompleto = nombreCompleto;
@@ -39,92 +44,107 @@ class Medico {
     }
 }
 
+//Evento que escuha cuando se presiona el submit del registro
 document.addEventListener("DOMContentLoaded", () => {
-    const formulario = document.getElementById("formulario");
-    if (formulario !== null) {
-        formulario.addEventListener("submit", (event) => {
+    const formulario = document.getElementById("formulario");//se optiene el elemento segun el id
+    if (formulario !== null) {//Se valida que no sea null
+        formulario.addEventListener("submit", (event) => { // Se escuha el evento del submit
             event.preventDefault();
 
-            const { correo, contrasenna } = obtenerDatosFormulario();
-            console.log(correo + "  " + contrasenna);
-            usuarios = JSON.parse(localStorage.getItem("usuarios"));
-            const esValido = validarContrasenna(contrasenna) && validarCedula(correo);
-            esValido ? manejarExito(correo, contrasenna) : manejarError(correo, contrasenna);
-            console.log("Usuario no encontrado o credenciales incorrectas");
+            const { correo, contrasenna } = obtenerDatosFormulario();//Se obtienen los datos
+            usuarios = JSON.parse(localStorage.getItem("usuarios"));//Se obtienen los usuarios registrados
+            const esValido = validarContrasenna(contrasenna) && validarCedula(correo);//Se valida los datos
+            esValido ? manejarExito(correo, contrasenna) : manejarError(correo, contrasenna);//Se verifica sí han cumplido el filtro.
         });
     }
 });
 
+//Funcion para obtener los datos del formulario
 const obtenerDatosFormulario = () => {
     const correo = document.getElementById("cedula").value.trim();
     const contrasenna = document.getElementById("contrasenna").value.trim();
-    return { correo, contrasenna };
+    return { correo, contrasenna };//Se retornan los valores
 };
-
+//Se valida la contraseña por medio de expresiones regualares
 const validarContrasenna = (contrasenna) => /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*[a-zA-Z]).{8,}$/.test(contrasenna);
-
+//Se valida la cedula por medio de expresiones regualares
 const validarCedula = (cedula) => /^\d{2}-\d{4}-\d{4}$/.test(cedula);
+
+//funcion asincrona para encriptar las contraseñas
 async function encriptarContrasena(contrasena) {
+    // Convertimos la contraseña en una secuencia de bytes
     const buffer = new TextEncoder().encode(contrasena);
 
+    // Utilizamos el método digest para calcular el hash SHA-256 del buffer.
     const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
+
+    // Convertimos el hash resultante de un buffer a un array de bytes.
     const hashArray = Array.from(new Uint8Array(hashBuffer));
+
+    // Convertimos cada byte del hash a su representación hexadecimal y los concatenamos para formar el hash en formato hexadecimal.
     const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+
+    // Devolvemos el hash en formato hexadecimal.
     return hashHex;
 }
-const manejarExito = async (correo, contrasenna) => {
+
+//Funcion para manejar el exito, recibe la cedula y la contraseña
+const manejarExito = async (cedula, contrasenna) => {
     const contrasennaEncriptada = await encriptarContrasena(contrasenna);
-    if (usuarios) {
-        for (const usuario of usuarios) {
-            if (usuario.cedula === correo && usuario.contrasenna === contrasennaEncriptada) {
-                usuarioActivo = usuario;
-                sessionStorage.setItem("usuarioActivo", JSON.stringify(usuarioActivo));
-                console.log("Nombre Usuario: " + usuario.cedula);
-                alert("Iniciar sesión exitoso");
-                limpiarCamposTexto();
-                window.location.href = "AgendarCita.html";
-                return;
+    if (usuarios) {//Se valida si la lista no es null
+        for (const usuario of usuarios) {// for para iterar
+            if (usuario.cedula === cedula && usuario.contrasenna === contrasennaEncriptada) {//Condición del if para buscar sí los datos existen en algun usuario
+                usuarioActivo = usuario;//Se guarda el usuario, en el usuario activo
+                sessionStorage.setItem("usuarioActivo", JSON.stringify(usuarioActivo));//Se guarda el usuario activo
+                alert("Iniciar sesión exitoso");//Enviar mensaje de exito
+                limpiarCamposTexto();//Se limpian los campos
+                window.location.href = "AgendarCita.html";//Se redirije a la pagina indicada
+                return;//Se rompe el ciclo
             }
         }
-        manejarError(correo, contrasenna);
+        manejarError(cedula, contrasenna);//Se llama al metodo de error
     }
 };
-const manejarError = async (correo, contrasenna) => {
-    const contrasennaEncriptada = await encriptarContrasena(contrasenna);
-    if (usuarios) {
-        for (const usuario of usuarios) {
-            if (usuario.cedula === correo && usuario.contrasena !== contrasennaEncriptada) {
-                contadorIntentosContra++;
-                if (contadorIntentosContra === 3) {
-                    const botonRegistrar = document.getElementById("botonIngresar");
-                    const labelTiempo = document.getElementById("tiempo");
-                    if (botonRegistrar) {
-                        botonRegistrar.style.display = "none"
+
+//funcion para ver el error
+const manejarError = async (cedula, contrasenna) => {
+    const contrasennaEncriptada = await encriptarContrasena(contrasenna);//Se encripta la contraseña
+    if (usuarios) {//Se valida que no sea null la lista de users
+        for (const usuario of usuarios) {//Se itera en la lista
+            if (usuario.cedula === cedula && usuario.contrasena !== contrasennaEncriptada) {// Se valida sí se cumple con la condición
+                contadorIntentosContra++;//Sí digita datos incorrectos, se suma uno al contador, para darle una advertencia
+                if (contadorIntentosContra === 3) {//Sí el contador es igual a 3, se le oculta el boton de iniciar hasta que se cumpla cierto tiempo
+                    const botonRegistrar = document.getElementById("botonIngresar");//Se obtiene el elemento boton
+                    const labelTiempo = document.getElementById("tiempo");//Se obtiene el elemento Label
+                    if (botonRegistrar) {//Sí no es null
+                        botonRegistrar.style.display = "none" // Se oculta del usuario
                     }
-                    if (labelTiempo) {
-                        labelTiempo.style.display = "flex"
+                    if (labelTiempo) {//Sí no es null
+                        labelTiempo.style.display = "flex"// Se muestra el Label
                     }
-                    iniciarTemporizador();
+                    iniciarTemporizador();//Se inicia el termporizador
                 }
             }
         }
     }
-    alert("Los datos ingresados no son válidos");
+    alert("Los datos ingresados no son válidos");//Se envia un mensaje de advertencia
 };
+// Esta función se utiliza para iniciar un temporizador con una cuenta regresiva de 10 segundos.
 const iniciarTemporizador = () => {
-    let tiempo = 10;
-    console.log(tiempo);
-    const labelTiempo = document.getElementById("tiempo");
-    const temporizador = setInterval(() => {
-        tiempo--;
-        if (labelTiempo) {
-            labelTiempo.textContent = "" + tiempo;
-        }
-        console.log(tiempo);
-        if (tiempo === 0) {
-            clearInterval(temporizador);
-            console.log("¡Tiempo terminado!");
+    let tiempo = 10; // Inicializamos el tiempo en 10 segundos.
+    console.log(tiempo); // Imprimimos el tiempo inicial en la consola.
+    const labelTiempo = document.getElementById("tiempo"); // Obtenemos el elemento con el id "tiempo" del documento HTML.
 
+    // Iniciamos un temporizador que se ejecuta cada segundo.
+    const temporizador = setInterval(() => {
+        tiempo--; // Reducimos el tiempo en 1 segundo en cada iteración.
+        if (labelTiempo) {
+            labelTiempo.textContent = "" + tiempo; // Actualizamos el contenido del elemento "labelTiempo" con el tiempo restante.
+        }
+        // Cuando el tiempo llega a cero, detenemos el temporizador y realizamos ciertas acciones.
+        if (tiempo === 0) {
+            clearInterval(temporizador); // Detenemos el temporizador.
+            // Mostramos el botón de registrar (si existe) y ocultamos el contador de tiempo.
             const botonRegistrar = document.getElementById("botonIngresar");
             if (botonRegistrar) {
                 botonRegistrar.style.display = "flex";
@@ -132,17 +152,17 @@ const iniciarTemporizador = () => {
             if (labelTiempo) {
                 labelTiempo.style.display = "none";
             }
-            contadorIntentosContra = 0;
+            contadorIntentosContra = 0; // Reiniciamos el contador de intentos de contraseña.
         }
-    }, 1000);
+    }, 1000); // El temporizador se ejecuta cada 1000 milisegundos (1 segundo).
 };
 
-const limpiarCamposTexto = () => {
+const limpiarCamposTexto = () => {//Se limpian los campos de texto
     const campos = document.querySelectorAll("#formulario input[type='email'], #formulario input[type='password']");
-    campos.forEach((campo) => campo.value = "");
+    campos.forEach((campo) => campo.value = "");//Se itera y se limpian los campos
 };
 
-const jsonMedicos = [
+const jsonMedicos = [//JSON con los medicos quemados
     {
         "nombreCompleto": "Juan",
         "identificacion": "01-2222-2222",
@@ -285,7 +305,7 @@ const jsonMedicos = [
 
 
 
-jsonMedicos.forEach(medico => {
+jsonMedicos.forEach(medico => {// Se pasa el JSON a objetos medicos.
     medicos.push(new Medico(
         medico.nombreCompleto,
         medico.identificacion,
@@ -297,40 +317,42 @@ jsonMedicos.forEach(medico => {
         medico.biografia
     ));
 });
-const jsonMedicosString = JSON.stringify(medicos);
-localStorage.setItem('medicos', jsonMedicosString);
+
+const jsonMedicosString = JSON.stringify(medicos);//Se guardan los medicos en el localStorage
+localStorage.setItem('medicos', jsonMedicosString);//Se guardan
+
+//evento para obtener el usuario activo
 document.addEventListener("DOMContentLoaded", () => {
-    const usuarioActivoString = sessionStorage.getItem("usuarioActivo");
-    if (usuarioActivoString) {
-        usuarioActivo = JSON.parse(usuarioActivoString);
-        const cerrarSesionLi = document.getElementById("cerrarSesion");
+    const usuarioActivoString = sessionStorage.getItem("usuarioActivo");//Obtenemos el usuario activo
+    if (usuarioActivoString) {//Validamos que no sea null
+        usuarioActivo = JSON.parse(usuarioActivoString);//Obtenemos el usuario Actico
+        const cerrarSesionLi = document.getElementById("cerrarSesion");//Mostramos el icono de cerrar cesión
 
-        cerrarSesionLi.style.display = "inline-block";
+        cerrarSesionLi.style.display = "inline-block";// Lo mostramos
 
-        const inicioSesio = document.getElementById("iniciarSesion");
+        const inicioSesio = document.getElementById("iniciarSesion");//Obtenemos el elemento por su id
 
-        inicioSesio.style.display = "none";
+        inicioSesio.style.display = "none";//Lo ocultamos
         const elementosMostrar = document.querySelectorAll("#agendarCita,#animacion, #busquedaMedico, #preguntasFrec, #servicios");
-        // Mostrar cada elemento
-        elementosMostrar.forEach(elemento => {
+        elementosMostrar.forEach(elemento => {//Iteramos y mostramos las opciones
             elemento.style.display = "inline-block";
         });
-        console.log("Usuario activo recuperado:", usuarioActivo);
-    } else {
+    } else {//Caso contrario ocultamos las opciones
         const elementosMostrar = document.querySelectorAll("#agendarCita,  #animacion, #busquedaMedico, #preguntasFrec, #servicios");
         elementosMostrar.forEach(elemento => {
             elemento.style.display = "none";
         });
-        console.log("No hay usuario activo almacenado en sessionStorage");
     }
 });
 
+//Cerramos sesion
 document.addEventListener("DOMContentLoaded", () => {
     const cerrarSesionLi = document.getElementById("cerrarSesion");
     cerrarSesionLi.addEventListener("click", cerrarSesion);
 });
 
-function cerrarSesion() {
+//Funcion para borrar el usuario Activo
+const cerrarSesion = () => {
     sessionStorage.removeItem("usuarioActivo");
     window.location.href = "index.html";
 }
