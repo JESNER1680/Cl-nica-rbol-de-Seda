@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clínica Árbol de Seda</title>
+    <link rel="stylesheet" type="text/css" href="css/estilo.css">
+    <script src="js/BusquedaMedico.js"></script>
+</head>
+
+<body>
+    <header id="cabeceraPagina">
+        <h1>Sistema de Citas Médicas</h1>
+        <nav>
+            <ul class="ulMenu">
+                <li id="inicio"><a href="index.html">Inicio</a></li>
+                <li id="agendarCita"><a href="AgendarCita.html">Agendar cita</a></li>
+                <li id="busquedaMedico"><a href="BusquedaMedicos.html">Búsqueda de médicos</a></li>
+                <li id="preguntasFrec"><a href="PreguntasFrecuentes.html">Preguntas Frecuentes</a></li>
+                <li id="servicios"><a href="Servicios.html">Servicios</a></li>
+                <li id="cerrarSesion" style="display: none">Cerrar Sesión</li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div class="contenido">
+            <div class="formulario">
+                <h2>Búsqueda de médicos</h2>
+                <br>
+                <form id="formularioBusquedaMedico">
+                    <div class="usuarios">
+                        <label>Información:</label>
+                        <input id="datoFiltro" type="text" required placeholder="Información"
+                            list="opcionesAutocompletado">
+                        <datalist id="opcionesAutocompletado">
+
+                        </datalist>
+                    </div>
+                    <br>
+                    <div class="usuarios">
+                        <label>Filtrar por:</label>
+                        <select name="tipoFiltrado" id="tipoFiltrado">
+                            <option value="nombreCompleto">Nombre</option>
+                            <option value="identificacion">Identificación</option>
+                            <option value="especialidad">Especialización</option>
+                            <option value="ubicacion">Ubicación</option>
+                        </select>
+                    </div>
+                    <br>
+                    <input id="botonBusqueda" type="submit" value="Filtrar">
+                </form>
+            </div>
+            <br>
+            <div class="Lista" id="Lista">
+                <table id="TablaBusqueda">
+                    <thead>
+                        <tr>
+                            <th>Nombre del Médico</th>
+                            <th>Identificación</th>
+                            <th>Ubicación</th>
+                            <th>Especialidad</th>
+                            <th>Ver perfil</th>
+                        </tr>
+                    </thead>
+                    <tbody id="informacionTabla">
+                    </tbody>
+                </table>
+            </div>
+            <div class="botones-container">
+                <!-- Botones de siguiente y anterior -->
+                <div id="botonesPaginacion"></div>
+                <div id="botonesSiguienteAnterior">
+                    <button id="botonAnterior">Anterior</button>
+                    <button id="botonSiguiente">Siguiente</button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+    <footer>
+        <p>¡Síguenos en nuestras redes sociales!</p>
+        <ul>
+            <li><a href="https://www.facebook.com/?locale=es_LA">Facebook</a></li>
+            <li><a href="https://twitter.com/?lang=es">Twitter</a></li>
+            <li><a href="https://www.instagram.com/">Instagram</a></li>
+        </ul>
+        <div class="contenidoFooter">
+            <a href="PoliticaPrivacidadTerminosUso.html">Politica de privacidad y terminos de uso</a>
+            <a href="InformacionContacto.html">Información de contacto</a>
+            <a href="SobreNosotros.html">Sobre Nosotros</a>
+
+        </div>
+        <p>Derechos de autor &copy; 2024 Clínica Árbol de Seda</p>
+    </footer>
+    <div class="container-modal">
+        <div class="content-modal" id="content-modal">
+
+            <div class="btn-cerrar">
+            </div>
+            <label for="btn-modal">Cerrar</label>
+        </div>
+
+    </div>
+</body>
+
+</html>

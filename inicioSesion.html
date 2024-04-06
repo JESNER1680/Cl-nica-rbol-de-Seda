@@ -1,0 +1,81 @@
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clínica Árbol de Seda</title>
+    <link rel="stylesheet" type="text/css" href="css/estilo.css">
+    <script src="js/main.js"></script>
+
+
+</head>
+
+<body>
+    <header id="cabezeraPagina">
+        <h1>Sistema de Citas Médicas</h1>
+        <nav>
+            <ul id="ulMenu">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="inicioSesion.html">Inicio de sesión</a></li>
+                <li id="cerrarSesion" style="display: none">Cerrar Sesión</li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="contenido">
+
+            <div class="formulario">
+                <h2> Iniciar sesion</h2>
+                <br>
+                <form id="formulario" method="post">
+
+                    <div class="usuarios">
+                        <label> Cédula de Identidad: </label>
+                        <input id="cedula" type="text" required>
+                    </div>
+
+                    <div class="usuarios">
+                        <label> Contraseña: </label>
+                        <input id="contrasenna" type="password" required>
+                    </div>
+
+                    <input id="botonIngresar" type="submit" value="Ingresar">
+                    <label id="tiempo" style="display: none;">""</label>
+
+                </form>
+                <br>
+                <form id="formRegistro" action="Registrar.html" method="GET">
+                    <input id="botonRegistrar" type="submit" value="Registrarse">
+                </form>
+                <br>
+                <form id="formRegistroRecuperar" action="RecuperarContrasenna.html" method="GET">
+                    <input id="botonRecuperar" type="submit" value="Recuperar">
+                </form>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer>
+        <p>¡Síguenos en nuestras redes sociales!</p>
+        <div>
+            <a href="https://www.facebook.com/?locale=es_LA">Facebook</a> |
+            <a href="https://twitter.com/?lang=es">X</a> |
+            <a href="https://www.instagram.com/">Instagram</a>
+        </div>
+        <div class="contenidoFooter">
+            <a href="PoliticaPrivacidadTerminosUso.html">Politica de privacidad y terminos de uso</a>
+            <a href="InformacionContacto.html">Información de contacto</a>
+            <a href="SobreNosotros.html">Sobre Nosotros</a>
+
+        </div>
+
+        <p>Derechos de autor &copy; 2024 Clínica Árbol de Seda</p>
+    </footer>
+
+</body>
+
+</html>

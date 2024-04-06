@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veterinaria Turrialba</title>
+    <link rel="stylesheet" type="text/css" href="css/estilo.css">
+    <script src="js/logica.js"></script>
+</head>
+
+<body>
+    <header id="cabezeraPagina">
+        <h1>Sistema de Citas Médicas</h1>
+        <nav>
+            <ul id="ulMenu">
+                <li id="inicio"><a href="index.html">Inicio</a></li>
+                <li id="agendarCita"><a href="AgendarCita.html">Agendar cita</a></li>
+                <li id="busquedaMedico"><a href="BusquedaMedicos.html">Búsqueda de médicos</a></li>
+                <li id="preguntasFrec"><a href="PreguntasFrecuentes.html">Preguntas Frecuentes</a></li>
+                <li id="servicios"><a href="Servicios.html">Servicios</a></li>
+                <li id="cerrarSesion" style="display: none">Cerrar Sesión</li>
+            </ul>
+        </nav>
+    </header>
+    <div class="contenido">
+        <div class="articulos">
+            <div class="secciones">
+                <div class="formularioContacto">
+                    <div class="info-contacto">
+                        <h2> Contactanos</h2>
+                        <p>
+                            ¿Tienes alguna pregunta, sugerencia o simplemente quieres saludarnos? ¡Nos encantaría
+                            escucharte! En la Clínica Árbol de Seda, valoramos la comunicación abierta con nuestros
+                            pacientes y la comunidad en general.
+                        </p>
+                        <a href="#">
+                            <i class="phone"></i>
+                            +506 87626129
+                        </a>
+                        <a href="#">
+                            <i class="correoContacto"></i>
+                            eliecermelgara1680@gmai.com
+                        </a>
+                        <a href="#"> <i class="direccionMap"></i>Ciudad,
+                            Pais</a><!--//*VER ESTA PARTE PARA QUE SE PROYECTE EN EL GOOGLE MAPS -->
+                    </div>
+
+                    <form action="#" autocomplete="off">
+                        <input type="text" name="nombre" placeholder="Ingresa tu nombre" class="campo">
+                        <input type="email" name="email" placeholder="Ingresa tu correo" class="campo">
+                        <textarea name="mensaje" placeholder="Ingresa tu mensaje"></textarea>
+                        <input type="submit" name="enviar" value="enviar mensaje" class="btn-enviar">
+                    </form>
+                </div>
+            </div>
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d62888.47557442318!2d-83.72186170737253!3d9.889764001418047!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8fa0d69d8497b87d%3A0x381c20411be73e68!2sTurrialba%2C%20Provincia%20de%20Cartago%2C%20Turrialba!5e0!3m2!1ses-419!2scr!4v1712158818325!5m2!1ses-419!2scr"
+                width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+    </div>
+    <footer>
+        <p>¡Síguenos en nuestras redes sociales!</p>
+        <div>
+            <a href="https://www.facebook.com/?locale=es_LA">Facebook</a> |
+            <a href="https://twitter.com/?lang=es">X</a> |
+            <a href="https://www.instagram.com/">Instagram</a>
+        </div>
+        <div class="contenidoFooter">
+            <a href="PoliticaPrivacidadTerminosUso.html">Politica de privacidad y terminos de uso</a>
+            <a href="InformacionContacto.html">Información de contacto</a>
+            <a href="SobreNosotros.html">Sobre Nosotros</a>
+
+        </div>
+        <p>Derechos de autor &copy; 2024 Veterinaria Turrialba</p>
+    </footer>
+</body>

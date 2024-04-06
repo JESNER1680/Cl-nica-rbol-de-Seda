@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clínica Árbol de Seda</title>
+    <link rel="stylesheet" type="text/css" href="css/estilo.css">
+    <script src="js/AgendarCita.js" defer></script>
+</head>
+
+<body>
+    <header id="cabezeraPagina">
+        <h1>Sistema de Citas Médicas</h1>
+        <nav>
+            <ul class="ulMenu">
+                <li id="inicio"><a href="index.html">Inicio</a></li>
+                <li id="agendarCita"><a href="AgendarCita.html">Agendar cita</a></li>
+                <li id="busquedaMedico"><a href="BusquedaMedicos.html">Búsqueda de médicos</a></li>
+                <li id="preguntasFrec"><a href="PreguntasFrecuentes.html">Preguntas Frecuentes</a></li>
+                <li id="servicios"><a href="Servicios.html">Servicios</a></li>
+                <li id="cerrarSesion" style="display: none"><a href="#">Cerrar Sesión</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="formulario">
+            <h2>Agendar Cita</h2>
+            <br>
+            <form id="formulario">
+                <br>
+                <div class="usuarios">
+                    <label for="especialidad">Especialidad:</label>
+                    <select name="especialidad" id="especialidad">
+                    </select>
+                </div>
+                <br>
+                <div class="usuarios">
+                    <label for="medicos">Médicos:</label>
+                    <select name="medicos" id="medicos">
+                    </select>
+                </div>
+                <br>
+                <div class="usuarios">
+                    <label for="fechaCita">Fecha de la cita:</label>
+                    <input id="fechaCita" type="date" required>
+                </div>
+                <br>
+                <div class="usuarios">
+                    <label for="horaCita">Hora de la cita:</label>
+                    <input id="horaCita" type="time" required>
+                </div>
+                <br>
+                <input id="RegistrarCita" type="submit" value="Ingresar">
+            </form>
+        </div>
+        <br>
+        <div class="infoCitas">
+            <h2>Citas registradas</h2>
+            <div class="ListaInfoCitas" id="ListaInfoCitas">
+                <table id="TablaBusqueda">
+                    <thead>
+                        <tr>
+                            <th>Fecha Cita</th>
+                            <th>Hora</th>
+                            <th>Medico</th>
+                            <th>Editar</th>
+                            <th>Cancelar</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ContenidoTablaCitas">
+
+                    </tbody>
+                </table>
+            </div>
+            <form id="formHistorial" action="Historial.html" method="GET">
+                <input id="botonHistorial" type="submit" value="Historial">
+            </form>
+
+        </div>
+
+        <div class="container-modal">
+            <div class="content-modal" id="content-modal">
+                <div class="btn-cerrar">
+                    <label for="btn-modal">Cerrar</label>
+                </div>
+            </div>
+            <label for="btn-modal" class="cerrar-modal"></label>
+        </div>
+        <br>
+        <div class="calendar">
+            <div class="header">
+                <div class="month"></div>
+                <div class="btns">
+                    <div class="btn today-btn">
+                        <i class="fas fa-calendar-day"></i>
+                    </div>
+                    <div class="btn prev-btn">
+                        <i class="fas fa-chevron-left"></i>
+                    </div>
+                    <div class="btn next-btn">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="weekdays">
+                <div class="day">Dom</div>
+                <div class="day">Lun</div>
+                <div class="day">Mar</div>
+                <div class="day">Mié</div>
+                <div class="day">Jue</div>
+                <div class="day">Vie</div>
+                <div class="day">Sáb</div>
+            </div>
+            <div class="days">
+                <!-- lets add days using js -->
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>¡Síguenos en nuestras redes sociales!</p>
+        <div>
+            <a href="https://www.facebook.com/?locale=es_LA">Facebook</a> |
+            <a href="https://twitter.com/?lang=es">Twitter</a> |
+            <a href="https://www.instagram.com/">Instagram</a>
+        </div>
+        <div class="contenidoFooter">
+            <a href="PoliticaPrivacidadTerminosUso.html">Politica de privacidad y terminos de uso</a>
+            <a href="InformacionContacto.html">Información de contacto</a>
+            <a href="SobreNosotros.html">Sobre Nosotros</a>
+
+        </div>
+        <p>Derechos de autor &copy; 2024 Veterinaria Turrialba</p>
+    </footer>
+</body>
+
+</html>
